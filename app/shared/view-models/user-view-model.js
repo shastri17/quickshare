@@ -4,9 +4,9 @@ var Observable = require("data/observable").Observable;
 var validator = require("email-validator");
 var firebase = require("nativescript-plugin-firebase");
 var dialogs = require("ui/dialogs");
+var frameModule = require("ui/frame");
 function User(info) {
     info = info || {};
-
     // You can add properties to observables on creation
     var viewModel = new Observable({
         email: info.email || "",
@@ -14,46 +14,15 @@ function User(info) {
     });
 
     viewModel.login = function() {
-        return fetchModule.fetch(config.apiUrl + "oauth/token", {
-            method: "POST",
-            body: JSON.stringify({
-                username: viewModel.get("email"),
-                password: viewModel.get("password"),
-                grant_type: "password"
-            }),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-        .then(handleErrors)
-        .then(function(response) {
-            return response.json();
-        })
-        .then(function(data) {
-            config.token = data.Result.access_token;
+        return firebase.login({type: firebase.LoginType.PASSWORD, email: viewModel.get("email"), password: viewModel.get("password")}).then(function(errorMessage) {
+            console.log(errorMessage);
         });
     };
 
     viewModel.register = function() {
-
-        return firebase.createUser({
-  email: viewModel.get("email"),
-  password: viewModel.get("password")
-}).then(
-    function (result) {
-      dialogs.alert({
-        title: "User created",
-        message: "userid: " + result.key,
-        okButtonText: "Nice!"
-      })
-    },
-    function (errorMessage) {
-      dialogs.alert({
-        title: "No user created",
-        message: errorMessage,
-        okButtonText: "OK, got it"
-      })
-  })
+        return firebase.createUser({email: viewModel.get("email"), password: viewModel.get("password")}).then(function(result) {
+            return result;
+        })
     };
 
     viewModel.isValidEmail = function() {

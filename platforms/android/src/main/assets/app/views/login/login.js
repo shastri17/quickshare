@@ -17,16 +17,15 @@ exports.loaded = function(args) {
 
 exports.signIn = function() {
     user.login()
-        .catch(function(error) {
+            .then(function() {
+                    frameModule.topmost().navigate("views/list/list");
+                }).catch(function(error) {
             console.log(error);
-            dialogsModule.alert({
-                message: "Unfortunately we could not find your account.",
-                okButtonText: "OK"
-            });
-            return Promise.reject();
-        })
-        .then(function() {
-            frameModule.topmost().navigate("views/list/list");
+            dialogsModule
+                .alert({
+                    message: "Wrong credentials",
+                    okButtonText: "OK"
+                });
         });
 };
 

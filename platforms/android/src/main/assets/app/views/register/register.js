@@ -7,6 +7,7 @@ var user = new UserViewModel();
 exports.loaded = function(args) {
     var page = args.object;
     page.bindingContext = user;
+    console.log(page)
 };
 
 function completeRegistration() {
@@ -15,7 +16,7 @@ function completeRegistration() {
             dialogsModule
                 .alert("Your account was successfully created.")
                 .then(function() {
-                    frameModule.topmost().navigate("views/login/login");
+                    frameModule.topmost().navigate("views/list/list");
                 });
         }).catch(function(error) {
             console.log(error);
