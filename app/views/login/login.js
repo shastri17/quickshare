@@ -3,7 +3,7 @@ var frameModule = require("ui/frame");
 var viewModule = require("ui/core/view");
 var UserViewModel = require("../../shared/view-models/user-view-model");
 var user = new UserViewModel();
-
+var appSettings = require("application-settings");
 exports.loaded = function(args) {
     var page = args.object;
 
