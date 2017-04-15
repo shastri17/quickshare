@@ -1,5 +1,6 @@
 var dialogsModule = require("ui/dialogs");
 var frameModule = require("ui/frame");
+var firebase = require("nativescript-plugin-firebase");
 
 var UserViewModel = require("../../shared/view-models/user-view-model");
 var user = new UserViewModel();
@@ -17,6 +18,8 @@ function completeRegistration() {
             console.log("Saving info")
             appSettings.setString('email', data["email"]);
             appSettings.setString('password', data["password"]);
+
+
             frameModule.topmost().navigate("views/list/list");
 
         });

@@ -26,7 +26,11 @@
   },
   "dependencies": {
     "email-validator": "1.0.7",
+    "nativescript-background-http": "^2.5.1",
+    "nativescript-imagepicker": "^2.5.1",
+    "nativescript-permissions": "^1.2.3",
     "nativescript-plugin-firebase": "^3.11.3",
+    "nativescript-push-notifications": "^0.1.2",
     "nativescript-social-share": "1.3.2",
     "tns-core-modules": "2.5.0"
   },

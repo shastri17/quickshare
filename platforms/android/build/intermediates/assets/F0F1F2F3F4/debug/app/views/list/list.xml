@@ -1,0 +1,7 @@
+
+<Page xmlns="http://www.nativescript.org/tns.xsd" loaded="pageLoaded">
+    <GridLayout rows="auto, *" columns="2*, *">
+        <TextField id="email" text="{{ email }}" hint="Enter an email" row="0" col="0" />
+        <Button text="Upload Image" row="0" col="1" tap="onSelectSingleTap"  />
+    </GridLayout>
+</Page>

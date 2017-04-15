@@ -1,0 +1,108 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "nativescript-background-http",
+        "scope": null,
+        "escapedName": "nativescript-background-http",
+        "name": "nativescript-background-http",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "/Users/hackintosh/Projects/quickshare"
+    ]
+  ],
+  "_from": "nativescript-background-http@latest",
+  "_id": "nativescript-background-http@2.5.1",
+  "_inCache": true,
+  "_location": "/nativescript-background-http",
+  "_nodeVersion": "6.9.2",
+  "_npmOperationalInternal": {
+    "host": "packages-12-west.internal.npmjs.com",
+    "tmp": "tmp/nativescript-background-http-2.5.1.tgz_1486469648124_0.20214808359742165"
+  },
+  "_npmUser": {
+    "name": "iliev.nick",
+    "email": "iliev.nick007@gmail.com"
+  },
+  "_npmVersion": "3.10.9",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "nativescript-background-http",
+    "scope": null,
+    "escapedName": "nativescript-background-http",
+    "name": "nativescript-background-http",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/nativescript-background-http/-/nativescript-background-http-2.5.1.tgz",
+  "_shasum": "a5f716fd6d9030500b3dfacb71745afb907e3331",
+  "_shrinkwrap": null,
+  "_spec": "nativescript-background-http",
+  "_where": "/Users/hackintosh/Projects/quickshare",
+  "bugs": {
+    "url": "https://github.com/NativeScript/nativescript-background-http/issues"
+  },
+  "dependencies": {
+    "tns-core-modules": "^2.5.0"
+  },
+  "description": "A cross platform plugin for [the NativeScript framework](http://www.nativescript.org), that provides background upload for iOS and Android.",
+  "devDependencies": {
+    "tns-platform-declarations": "^2.5.0",
+    "typescript": "^2.0.3"
+  },
+  "directories": {},
+  "dist": {
+    "shasum": "a5f716fd6d9030500b3dfacb71745afb907e3331",
+    "tarball": "https://registry.npmjs.org/nativescript-background-http/-/nativescript-background-http-2.5.1.tgz"
+  },
+  "homepage": "http://nativescript.github.io/nativescript-background-http/",
+  "keywords": [
+    "background",
+    "http",
+    "upload",
+    "download",
+    "NativeScript"
+  ],
+  "license": "Apache-2.0",
+  "main": "background-http",
+  "maintainers": [
+    {
+      "name": "hdeshev",
+      "email": "hristo@deshev.com"
+    },
+    {
+      "name": "iliev.nick",
+      "email": "iliev.nick007@gmail.com"
+    },
+    {
+      "name": "panayot.cankov",
+      "email": "panayot.cankov@telerik.com"
+    }
+  ],
+  "name": "nativescript-background-http",
+  "nativescript": {
+    "platforms": {
+      "ios": "2.5.0",
+      "android": "2.5.0"
+    }
+  },
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NativeScript/nativescript-background-http.git"
+  },
+  "scripts": {
+    "prepublish": "tsc",
+    "tsc": "tsc"
+  },
+  "url": "https://github.com/NativeScript/nativescript-background-http/issues",
+  "version": "2.5.1"
+}

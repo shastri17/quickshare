@@ -1,5 +1,11 @@
 {
     "email-validator": true,
+    "nativescript-background-http": true,
+    "tns-core-modules": true,
+    "tns-core-modules-widgets": true,
+    "nativescript-imagepicker": true,
+    "nativescript-telerik-ui": true,
+    "nativescript-permissions": true,
     "nativescript-plugin-firebase": true,
     "fs-promise": true,
     "any-promise": true,
@@ -42,7 +48,6 @@
     "lodash": true,
     "xmldom": true,
     "uuid": true,
-    "nativescript-social-share": true,
-    "tns-core-modules": true,
-    "tns-core-modules-widgets": true
+    "nativescript-push-notifications": true,
+    "nativescript-social-share": true
 }

@@ -30,6 +30,22 @@ function User(info) {
         return firebase.createUser({email: viewModel.get("email"), password: viewModel.get("password")})
         .then(function(result) {
             var obj = {email: viewModel.get("email"), password: viewModel.get("password")}
+            firebase.addOnPushTokenReceivedCallback(
+                function(token) {
+                    console.log("received token : " + token)
+                    firebase.push(
+              '/devices',
+              {
+                'user': data["email"],
+                'token': token
+              }
+          ).then(
+              function (result) {
+                console.log("created key: " + result.key);
+              }
+          );
+    }
+  );
             return obj;
         })
     };
