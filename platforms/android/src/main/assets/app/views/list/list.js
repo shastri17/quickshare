@@ -12,9 +12,10 @@ var firebase = require("nativescript-plugin-firebase");
 var imageItems = new observableArray.ObservableArray();
 var mainViewModel = new observable.Observable();
 var imageSource = require("image-source");
-mainViewModel.set("imageItems", imageItems);
+let uploaded = false;
 var documents = fs.knownFolders.documents();
 var page;
+var timer = require("timer");
 var imageName;
 var counter = 0;
 
@@ -47,18 +48,7 @@ var sender = appSettings.getString('email', 'not set');
 var receiver = mainViewModel.get('email')
 console.log(receiver)
 imageName = extractImageName(fileUri);
-firebase.push(
-      '/transfers',
-      {
-		  'sender': sender,
-		  'receiver': receiver,
-		  'filename': imageName
-      }
-  ).then(
-      function (result) {
-        console.log("created key: " + result.key);
-      }
-  );
+
 
 	firebase.uploadFile({
     // optional, can also be passed during init() as 'storageBucket' param so we can cache it (find it in the Firebase console)
@@ -77,6 +67,18 @@ firebase.push(
       function (uploadedFile) {
         console.log("File uploaded: " + JSON.stringify(uploadedFile));
 		mainViewModel.set('email','')
+		firebase.push(
+		      '/transfers',
+		      {
+				  'sender': sender,
+				  'receiver': receiver,
+				  'filename': imageName
+		      }
+		  ).then(
+		      function (result) {
+		        console.log("created key: " + result.key);
+		      }
+		  );
       },
       function (error) {
         console.log("File upload error: " + error);
@@ -95,17 +97,12 @@ function startSelection(context) {
 			selection.forEach(function(selected_item) {
                 selected_item.getImage().then(function(imagesource){
                     let folder = fs.knownFolders.documents();
-                    let path = fs.path.join(folder.path, "Test"+counter+".png");
+					var p = Math.random().toString(36).substring(7);
+                    let path = fs.path.join(folder.path, p +".png");
                     let saved = imagesource.saveToFile(path, "png");
 
                     if(saved){
                         var task = sendImages("Image"+counter+".png", path);
-                        var item = new observable.Observable();
-                        item.set("thumb", imagesource);
-                        item.set("uri", "Test"+counter+".png");
-                        item.set("uploadTask", task);
-
-                        imageItems.push(item);
                     }
                     counter++;
                 })
@@ -140,32 +137,34 @@ var onChildEvent = function(result) {
 	   console.log(logoPath)
 	   console.log("here")
 	   console.log(result.value["filename"]["0"])
-	   firebase.downloadFile({
-    // optional, can also be passed during init() as 'storageBucket' param so we can cache it
-    bucket: 'gs://quickshare-f22aa.appspot.com',
-    // the full path of an existing file in your Firebase storage
-    remoteFullPath: 'uploads/images/' + user+ '/'+ result.value["filename"]["0"],
-    // option 1: a file-system module File object
-    localFile: fs.File.fromPath(logoPath),
-  }).then(
-      function (uploadedFile) {
-        console.log("File downloaded to the requested location");
-      },
-      function (error) {
-        console.log("File download error: " + error);
-      }
-  );
-   }
-   var item = new observable.Observable();
+
+      /* do something*/
+	  firebase.downloadFile({
+   // optional, can also be passed during init() as 'storageBucket' param so we can cache it
+   bucket: 'gs://quickshare-f22aa.appspot.com',
+   // the full path of an existing file in your Firebase storage
+   remoteFullPath: 'uploads/images/' + user+ '/'+ result.value["filename"]["0"],
+   // option 1: a file-system module File object
+   localFile: fs.File.fromPath(logoPath),
+ }).then(
+	 function (uploadedFile) {
+	   console.log("File downloaded to the requested location");
+	   var item = new observable.Observable();
 
 
-item.set("thumb", logoPath);
-item.set("uri", image);
-console.log(item)
-imageItems.push(item);
-console.log(imageItems)
+	 mainViewModel.set("thumb", logoPath);
+	 mainViewModel.set("uri", image);
+	 imageItems.push(item);
+	 mainViewModel.set("imageItems", imageItems);
+	 },
+	 function (error) {
+	   console.log("File download error: " + error);
+	 }
+ );
 
 
+
+    }
  };
 
  // listen to changes in the /users path
