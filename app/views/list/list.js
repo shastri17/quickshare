@@ -67,12 +67,15 @@ imageName = extractImageName(fileUri);
       function (uploadedFile) {
         console.log("File uploaded: " + JSON.stringify(uploadedFile));
 		mainViewModel.set('email','')
+		var cleanusername = receiver.replace("@gmail.com","");
+		console.log(cleanusername);
 		firebase.push(
-		      '/transfers',
+		      '/userbucket/' + cleanusername,
 		      {
 				  'sender': sender,
 				  'receiver': receiver,
-				  'filename': imageName
+				  'filename': imageName,
+				  downloaded : false,
 		      }
 		  ).then(
 		      function (result) {
@@ -126,13 +129,15 @@ var onChildEvent = function(result) {
    console.log("Value: " + JSON.stringify(result.value));
    count=count+1;
    console.log(count)
+   var receiver = result.value['receiver']
+   var cleanusername = receiver.replace("@gmail.com","");
    var user = appSettings.getString('email', 'not set');
    console.log(user)
    val = JSON.stringify(result.value)
+   if(result.value['downloaded'] != true){
    var image = result.value["filename"]["0"];
  var logoPath = documents.path + "/" + image
    console.log(result.value["receiver"])
-   if(result.value["receiver"] == user ){
 	   console.log("need to download")
 	   console.log(logoPath)
 	   console.log("here")
@@ -150,7 +155,10 @@ var onChildEvent = function(result) {
 	 function (uploadedFile) {
 	   console.log("File downloaded to the requested location");
 	   var item = new observable.Observable();
-
+	   firebase.update(
+	       '/userbucket/' + cleanusername + '/' + result.key,
+	       {downloaded:true}
+	   );
 
 	 mainViewModel.set("thumb", logoPath);
 	 mainViewModel.set("uri", image);
@@ -162,13 +170,14 @@ var onChildEvent = function(result) {
 	 }
  );
 
+}
 
 
-    }
  };
-
+var senderlistener = appSettings.getString('email', 'not set');
+var senderlistenerclean = senderlistener.replace("@gmail.com","");
  // listen to changes in the /users path
- firebase.addChildEventListener(onChildEvent, "/transfers").then(
+ firebase.addChildEventListener(onChildEvent, "/userbucket/"+senderlistenerclean).then(
    function(listenerWrapper) {
 	 var path = listenerWrapper.path;
 	 var listeners = listenerWrapper.listeners; // an Array of listeners added

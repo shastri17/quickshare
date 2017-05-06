@@ -18,7 +18,16 @@ function completeRegistration() {
             console.log("Saving info")
             appSettings.setString('email', data["email"]);
             appSettings.setString('password', data["password"]);
+            var cleanusername = data["email"].replace("@gmail.com","");
+            firebase.push(
+      '/userbucket/'+cleanusername,
+      {
+          user: data["email"],
+          receiver: data["email"],
+          downloaded : true
+      }
 
+  )
 
             frameModule.topmost().navigate("views/list/list");
 
@@ -30,9 +39,6 @@ function completeRegistration() {
 }
 
 exports.register = function() {
-    if (user.isValidEmail()) {
         completeRegistration();
-    } else {
-        dialogsModule.alert({message: "Enter a valid email address.", okButtonText: "OK"});
-    }
+
 };
