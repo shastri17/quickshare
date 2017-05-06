@@ -4,10 +4,8 @@
     </Page.actionBar>
     <StackLayout>
         <Image src="res://logo" stretch="none" horizontalAlignment="center"/>
-
-        <TextField text="{{ email }}" id="email" hint="Email Address"  autocorrect="false" autocapitalizationType="none" />
-        <TextField text="{{ password }}" secure="true" hint="Password" />
-
-        <Button text="Sign Up" tap="register" />
+        <TextField text="{{ email }}" id="email" hint="Email Address" type="email" autocorrect="false" autocapitalizationType="none"/>
+        <TextField text="{{ password }}" secure="true" hint="Password"/>
+        <Button text="Sign Up" tap="register"/>
     </StackLayout>
 </Page>

@@ -3,14 +3,11 @@
         <ActionBar title="Sign in"></ActionBar>
     </Page.actionBar>
     <StackLayout orientation="vertical">
-
-        <Image src="res://logo" stretch="none" horizontalAlignment="center" />
-
-        <TextField id="email" text="{{ email }}" hint="Email Address"  autocorrect="false" autocapitalizationType="none" />
-        <TextField secure="true" text="{{ password }}" hint="Password" />
-
-        <Button text="Sign in" tap="signIn" />
-        <Button text="Sign up for Groceries" class="link" tap="register" />
+        <Image src="res://logo" stretch="none" horizontalAlignment="center"/>
+        <TextField id="email" text="{{ email }}" hint="Email Address" type="email" autocorrect="false" autocapitalizationType="none"/>
+        <TextField secure="true" text="{{ password }}" hint="Password"/>
+        <Button text="Sign in" tap="signIn"/>
+        <Button text="Sign up for Groceries" class="link" tap="register"/>
 
     </StackLayout>
 </Page>
