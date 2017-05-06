@@ -23,7 +23,6 @@ firebase.init({
       console.log("firebase.init error: " + error);
     }
 );
-appSettings.clear();
 var email,password;
 email = appSettings.getString('email', 'not set');
 password = appSettings.getString('password', 'not set');
