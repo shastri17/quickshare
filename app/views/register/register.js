@@ -17,12 +17,6 @@ function completeRegistration() {
             console.log("Saving info")
             appSettings.setString('email', data["email"]);
             appSettings.setString('password', data["password"]);
-            var cleanusername = data["email"].replace("@gmail.com", "");
-            firebase.push('/userbucket/' + cleanusername, {
-                user: data["email"],
-                receiver: data["email"],
-                downloaded: true
-            })
             frameModule.topmost().navigate("views/share/share");
         });
     }).catch(function(error) {

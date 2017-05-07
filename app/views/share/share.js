@@ -22,6 +22,27 @@ function pageLoaded(args) {
     page = args.object;
     page.bindingContext = mainViewModel;
 }
+documents.getEntities()
+    .then(function (entities) {
+        // entities is array with the document's files and folders.
+        entities.forEach(function (entity) {
+            console.log(entity.name);
+            var item = new observable.Observable();
+            console.log(documents.path+entity.name)
+            item.set("thumb", documents.path+'/'+entity.name);
+            imageItems.push(item);
+            mainViewModel.set("imageItems", imageItems);
+        });
+    }, function (error) {
+        // Failed to obtain folder's contents.
+        // globalConsole.error(error.message);
+    });
+documents.eachEntity(function (entity) {
+    console.log(entity.name);
+    // Return true to continue, or return false to stop the iteration.
+
+    return true;
+});
 
 function onSelectSingleTap(args) {
     var context = imagepickerModule.create({mode: "single"});
@@ -73,12 +94,10 @@ function startSelection(context) {
         selection.forEach(function(selected_item) {
             selected_item.getImage().then(function(imagesource) {
                 let folder = fs.knownFolders.documents();
+                console.log(selected_item.fileUri)
                 var p = Math.random().toString(36).substring(7);
                 let path = fs.path.join(folder.path, p + ".png");
-                let saved = imagesource.saveToFile(path, "png");
-                if (saved) {
-                    var task = sendImages("Image" + counter + ".png", path);
-                }
+                    var task = sendImages("Image" + counter + ".png", selected_item.fileUri);
                 counter++;
             })
 
@@ -99,20 +118,20 @@ var onChildEvent = function(result) {
     console.log("Key: " + result.key);
     console.log("Value: " + JSON.stringify(result.value));
     var receiver = result.value['receiver']
+    var user = appSettings.getString('email', 'not set');
     var cleanusername = receiver.replace("@gmail.com", "");
     if (result.value['downloaded'] != true) {
         var image = result.value["filename"]["0"];
-        var logoPath = documents.path + "/" + image
+        var logoPath = documents.path  + '/' +image
         firebase.downloadFile({
             remoteFullPath: 'uploads/images/' + user + '/' + result.value["filename"]["0"],
-            localFile: fs.File.fromPath(logoPath)
+            localFile: fs.File.fromPath(logoPath),
         }).then(function(uploadedFile) {
             var item = new observable.Observable();
             firebase.update('/userbucket/' + cleanusername + '/' + result.key, {downloaded: true});
-            mainViewModel.set("thumb", logoPath);
-            mainViewModel.set("uri", image);
+            var item = new observable.Observable();
+            item.set("thumb", logoPath);
             imageItems.push(item);
-            mainViewModel.set("imageItems", imageItems);
         }, function(error) {
             console.log("File download error: " + error);
         });
@@ -120,6 +139,7 @@ var onChildEvent = function(result) {
 };
 var senderlistener = appSettings.getString('email', 'not set');
 var senderlistenerclean = senderlistener.replace("@gmail.com", "");
+console.log(senderlistenerclean)
 firebase.addChildEventListener(onChildEvent, "/userbucket/" + senderlistenerclean).then(function(listenerWrapper) {
     var path = listenerWrapper.path;
     var listeners = listenerWrapper.listeners;

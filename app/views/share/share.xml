@@ -1,4 +1,4 @@
-<Page xmlns="http://www.nativescript.org/tns.xsd" loaded="pageLoaded">
+<Page loaded="pageLoaded">
     <Page.actionBar>
         <ActionBar title="quickshare"></ActionBar>
     </Page.actionBar>
@@ -15,10 +15,15 @@
             </TabViewItem>
             <TabViewItem title="Files">
                 <TabViewItem.view>
-                    <GridLayout columns="110, auto" rows="*, *, *, *" class="cell-view">
-                        <Image rowSpan="4" width="94" height="94" src="{{ thumb }}"/>
-                        <Label col="1" row="0" text="{{ uri }}" textWrap="true"/>
-                    </GridLayout>
+                    <GridLayout rows="*, auto, auto" class="pick-page">
+       <ListView items="{{ imageItems }}" >
+           <ListView.itemTemplate>
+               <GridLayout columns="180, auto" rows="*, *" class="cell-view">
+                   <Image rowSpan="8" width="94" height="94" src="{{ thumb }}" />
+               </GridLayout>
+           </ListView.itemTemplate>
+       </ListView>
+   </GridLayout>
                 </TabViewItem.view>
             </TabViewItem>
         </TabView.items>
