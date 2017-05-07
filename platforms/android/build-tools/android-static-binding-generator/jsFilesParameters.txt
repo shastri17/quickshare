@@ -1,0 +1,2 @@
+/Users/hackintosh/Projects/quickshare/platforms/android/src/main/assets/app/app.js
+/Users/hackintosh/Projects/quickshare/platforms/android/src/main/assets/app/views/list/list.js

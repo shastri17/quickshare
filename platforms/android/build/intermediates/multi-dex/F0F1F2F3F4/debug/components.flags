@@ -1,0 +1,109 @@
+-injars /Users/hackintosh/Projects/quickshare/platforms/android/build/intermediates/transforms/jarMerging/F0F1F2F3F4/debug/jars/1/1f/combined.jar
+-outjars /Users/hackintosh/Projects/quickshare/platforms/android/build/intermediates/multi-dex/F0F1F2F3F4/debug/componentClasses.jar
+
+-libraryjars /Users/hackintosh/Library/Android/sdk/build-tools/25.0.2/lib/shrinkedAndroid.jar
+
+-forceprocessing
+-dontoptimize
+-dontobfuscate
+-dontusemixedcaseclassnames
+-dontpreverify
+-dontnote **,com.android.tools.fd.**,android.support.multidex.MultiDexExtractor
+-dontwarn **
+-printconfiguration /Users/hackintosh/Projects/quickshare/platforms/android/build/intermediates/multi-dex/F0F1F2F3F4/debug/components.flags
+
+
+-keep class com.tns.NativeScriptApplication {
+    <init>();
+    void attachBaseContext(android.content.Context);
+}
+
+-keep class com.alexbbb.uploadservice.UploadService {
+    <init>();
+}
+
+-keep class com.tns.NativeScriptActivity {
+    <init>();
+}
+
+-keep class com.tns.ErrorReportActivity {
+    <init>();
+}
+
+-keep class com.telerik.pushplugin.PushHandlerActivity {
+    <init>();
+}
+
+-keep class com.google.android.gms.gcm.GcmReceiver {
+    <init>();
+}
+
+-keep class com.telerik.pushplugin.PushPlugin {
+    <init>();
+}
+
+-keep class net.gotev.uploadservice.UploadService {
+    <init>();
+}
+
+-keep class com.google.android.gms.measurement.AppMeasurementReceiver {
+    <init>();
+}
+
+-keep class com.google.android.gms.measurement.AppMeasurementInstallReferrerReceiver {
+    <init>();
+}
+
+-keep class com.google.android.gms.measurement.AppMeasurementService {
+    <init>();
+}
+
+-keep class com.google.firebase.provider.FirebaseInitProvider {
+    <init>();
+}
+
+-keep class com.google.firebase.iid.FirebaseInstanceIdReceiver {
+    <init>();
+}
+
+-keep class com.google.firebase.iid.FirebaseInstanceIdInternalReceiver {
+    <init>();
+}
+
+-keep class com.google.firebase.iid.FirebaseInstanceIdService {
+    <init>();
+}
+
+-keep class com.google.android.gms.common.api.GoogleApiActivity {
+    <init>();
+}
+
+-keep class com.google.firebase.messaging.FirebaseMessagingService {
+    <init>();
+}
+
+-keep class org.nativescript.plugins.firebase.MyFirebaseMessagingService {
+    <init>();
+}
+
+-keep class org.nativescript.plugins.firebase.MyFirebaseInstanceIDService {
+    <init>();
+}
+
+-keep class com.telerik.pushplugin.InstanceIdListenerService {
+    <init>();
+}
+
+-keep public class * extends android.app.backup.BackupAgent {
+    <init>();
+}
+
+-keep public class * extends java.lang.annotation.Annotation {
+    <fields>;
+    <methods>;
+}
+
+-keep class com.android.tools.fd.** {
+    <fields>;
+    <methods>;
+}
