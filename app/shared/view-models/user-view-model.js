@@ -32,15 +32,6 @@ function User(info) {
                 email: email,
                 password: password
             }
-            firebase.addOnPushTokenReceivedCallback(function(token) {
-                console.log("received token : " + token)
-                firebase.push('/devices', {
-                    'user': data["email"],
-                    'token': token
-                }).then(function(result) {
-                    console.log("created key: " + result.key);
-                });
-            });
             return obj;
         })
     };

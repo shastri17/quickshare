@@ -1,0 +1,7 @@
+
+<Page xmlns="http://www.nativescript.org/tns.xsd" navigatedTo="navigatedTo">
+    <StackLayout class="details-page">
+        <Button text="Go Back" tap="onGoBack" />    
+        <Image src="{{ image }}" class="details-image"/>
+    </StackLayout>
+</Page>

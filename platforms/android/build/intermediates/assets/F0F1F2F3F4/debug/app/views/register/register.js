@@ -1,10 +1,10 @@
 var dialogsModule = require("ui/dialogs");
 var frameModule = require("ui/frame");
 var firebase = require("nativescript-plugin-firebase");
-
 var UserViewModel = require("../../shared/view-models/user-view-model");
 var user = new UserViewModel();
 var appSettings = require('application-settings');
+
 exports.loaded = function(args) {
     var page = args.object;
     page.bindingContext = user;
@@ -13,15 +13,11 @@ exports.loaded = function(args) {
 
 function completeRegistration() {
     user.register().then(function(data) {
-        dialogsModule.alert("Your account was successfully created.")
-        .then(function() {
+        dialogsModule.alert("Your account was successfully created.").then(function() {
             console.log("Saving info")
             appSettings.setString('email', data["email"]);
             appSettings.setString('password', data["password"]);
-
-
-            frameModule.topmost().navigate("views/list/list");
-
+            frameModule.topmost().navigate("views/share/share");
         });
     }).catch(function(error) {
         console.log(error);
@@ -30,9 +26,5 @@ function completeRegistration() {
 }
 
 exports.register = function() {
-    if (user.isValidEmail()) {
-        completeRegistration();
-    } else {
-        dialogsModule.alert({message: "Enter a valid email address.", okButtonText: "OK"});
-    }
+    completeRegistration();
 };

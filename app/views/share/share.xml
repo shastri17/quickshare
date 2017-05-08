@@ -19,7 +19,8 @@
        <ListView items="{{ imageItems }}" >
            <ListView.itemTemplate>
                <GridLayout columns="180, auto" rows="*, *" class="cell-view">
-                   <Image rowSpan="8" width="94" height="94" src="{{ thumb }}" />
+                   <Image rowSpan="8" width="94" height="94" src="{{ thumb }}" tap="listitem"/>
+                   <Button text="Delete"  row="0" col="1" tap="delete" img="{{ name}}" class="logout"/>
                </GridLayout>
            </ListView.itemTemplate>
        </ListView>

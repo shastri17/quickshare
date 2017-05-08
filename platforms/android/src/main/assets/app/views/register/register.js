@@ -8,13 +8,11 @@ var appSettings = require('application-settings');
 exports.loaded = function(args) {
     var page = args.object;
     page.bindingContext = user;
-    console.log(page)
 };
 
 function completeRegistration() {
     user.register().then(function(data) {
         dialogsModule.alert("Your account was successfully created.").then(function() {
-            console.log("Saving info")
             appSettings.setString('email', data["email"]);
             appSettings.setString('password', data["password"]);
             frameModule.topmost().navigate("views/share/share");

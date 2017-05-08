@@ -1,2 +1,6 @@
+/Users/hackintosh/Projects/quickshare/platforms/android/src/main/assets/app/views/share/full-screen-page.js
 /Users/hackintosh/Projects/quickshare/platforms/android/src/main/assets/app/app.js
-/Users/hackintosh/Projects/quickshare/platforms/android/src/main/assets/app/views/list/list.js
+/Users/hackintosh/Projects/quickshare/platforms/android/src/main/assets/app/views/register/register.js
+/Users/hackintosh/Projects/quickshare/platforms/android/src/main/assets/app/shared/view-models/user-view-model.js
+/Users/hackintosh/Projects/quickshare/platforms/android/src/main/assets/app/views/login/login.js
+/Users/hackintosh/Projects/quickshare/platforms/android/src/main/assets/app/views/share/share.js
