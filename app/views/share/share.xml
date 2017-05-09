@@ -15,7 +15,9 @@
             </TabViewItem>
             <TabViewItem title="Files">
                 <TabViewItem.view>
-                    <GridLayout rows="*, auto, auto" class="pick-page">
+
+                    <StackLayout rows="*, auto, auto" class="pick-page">
+<Button text="Delete all"  tap="deleteall" class="logout"/>
        <ListView items="{{ imageItems }}" >
            <ListView.itemTemplate>
                <GridLayout columns="180, auto" rows="*, *" class="cell-view">
@@ -24,7 +26,7 @@
                </GridLayout>
            </ListView.itemTemplate>
        </ListView>
-   </GridLayout>
+   </StackLayout>
                 </TabViewItem.view>
             </TabViewItem>
         </TabView.items>

@@ -158,7 +158,6 @@ function listitem(args) {
     frameModule.topmost().navigate({moduleName: "views/share/full-screen-page", context: args.object.src});
 }
 function deleteitem(args) {
-    console.log(args.object.img)
     var folder = documents.getFolder("downloads");
  args.object.parent.parent.refresh();
 
@@ -181,3 +180,13 @@ exports.logout = function() {
 };
 exports.listitem = listitem;
 exports.delete = deleteitem;
+exports.deleteall = function(){
+var folder = documents.getFolder("downloads");
+folder.clear()
+    .then(function () {
+        mainViewModel.set("imageItems", imageItems);
+            imageItems.splice(0,imageItems.length)
+    }, function (error) {
+        // Failed to clear the folder.
+    });
+}
