@@ -4,6 +4,7 @@ var appSettings = require("application-settings");
 
 firebase.init({
     onPushTokenReceivedCallback: function(token) {
+        appSettings.setString('token', token);
         console.log("Firebase push token: " + token);
     },
     onMessageReceivedCallback: function(message) {
