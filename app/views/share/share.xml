@@ -9,7 +9,7 @@
                     <StackLayout rows="auto, *" columns="2*, *">
                         <TextField id="email" text="{{ email }}" hint="Enter an email" row="0" col="0" type="email" autocorrect="false" autocapitalizationType="none"/>
                         <Button text="Upload Image" row="0" col="1" tap="onSelectSingleTap"/>
-                        <Button text="Logout"  tap="logout" class="logout"/>
+                        <Button text="Logout" tap="logout" class="logout"/>
                     </StackLayout>
                 </TabViewItem.view>
             </TabViewItem>
@@ -17,16 +17,16 @@
                 <TabViewItem.view>
 
                     <StackLayout rows="*, auto, auto" class="pick-page">
-<Button text="Delete all"  tap="deleteall" class="logout"/>
-       <ListView items="{{ imageItems }}" >
-           <ListView.itemTemplate>
-               <GridLayout columns="180, auto" rows="*, *" class="cell-view">
-                   <Image rowSpan="8" width="94" height="94" src="{{ thumb }}" tap="listitem"/>
-                   <Button text="Delete"  row="0" col="1" tap="delete" img="{{ name}}" class="logout"/>
-               </GridLayout>
-           </ListView.itemTemplate>
-       </ListView>
-   </StackLayout>
+                        <Button text="Delete all" tap="deleteall" class="logout"/>
+                        <ListView items="{{ imageItems }}">
+                            <ListView.itemTemplate>
+                                <GridLayout columns="180, auto" rows="*, *" class="cell-view">
+                                    <Image rowSpan="8" width="94" height="94" src="{{ thumb }}" tap="listitem"/>
+                                    <Button text="Delete" row="0" col="1" tap="delete" img="{{ name}}" class="logout"/>
+                                </GridLayout>
+                            </ListView.itemTemplate>
+                        </ListView>
+                    </StackLayout>
                 </TabViewItem.view>
             </TabViewItem>
         </TabView.items>

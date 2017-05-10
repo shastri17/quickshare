@@ -90,42 +90,51 @@ function sendImages(fileUri) {
         }).then(function(result) {
             console.log("created key: " + result.key);
             var onQueryEvent = function(result) {
-    // note that the query returns 1 match at a time
-    // in the order specified in the query
-    if (!result.error) {
-        console.log("Event type: " + result.type);
-        console.log("Key: " + result.key);
-        console.log("Value: " + JSON.stringify(result.value));
-        console.log(result.value['token'])
-        token = result.value['token']
-        text = sender + " sent you a new photo!"
-        http.request({
-url: "https://fcm.googleapis.com/fcm/send",
-method: "POST",
-headers: {
-    "Authorization": "key=AAAAq0Pli_E:APA91bG2APH54GFsopp2haUNXx2y3h3l5qB9HQvY4c2KoG8O7cVFPFXCd80GPEIehImi9g1qZeLfxPpS3Nnj2BoYt-ckCZJ0yyrgsdlYLNqYLa-r2Oi-7wSjF0L3ZPsdj6xCN88jW42u",
-    "Content-Type": "application/json" },
-content: JSON.stringify({ notification:{title: "Incoming file!", text: text, badge: "1", sound: "default"}, data:{foo:"bar"}, priority: "High", to: token})
-}).then(function (response) {
-result = response.content.toJSON();
- console.log(result);
-}, function (e) {
- console.log("Error occurred " + e);
-});
-    }
-};
-            firebase.query(
-        onQueryEvent,
-        "/devices/"+cleanusername,
-        {
-            singleEvent: true,
-            orderBy: {
-               type: firebase.QueryOrderByType.CHILD,
-               value: 'token' // mandatory when type is 'child'
-           },
-        }
-    );
-    console.log("here")
+                // note that the query returns 1 match at a time
+                // in the order specified in the query
+                if (!result.error) {
+                    console.log("Event type: " + result.type);
+                    console.log("Key: " + result.key);
+                    console.log("Value: " + JSON.stringify(result.value));
+                    console.log(result.value['token'])
+                    token = result.value['token']
+                    text = sender + " sent you a new photo!"
+                    http.request({
+                        url: "https://fcm.googleapis.com/fcm/send",
+                        method: "POST",
+                        headers: {
+                            "Authorization": "key=AAAAq0Pli_E:APA91bG2APH54GFsopp2haUNXx2y3h3l5qB9HQvY4c2KoG8O7cVFPFXCd80GPEIehImi9g1qZeLfxPpS3Nnj2BoYt-ckCZJ0yyrgsdlYLNqYLa-r2Oi-7wSjF0L3ZPsdj6xCN88jW42u",
+                            "Content-Type": "application/json"
+                        },
+                        content: JSON.stringify({
+                            notification: {
+                                title: "Incoming file!",
+                                text: text,
+                                badge: "1",
+                                sound: "default"
+                            },
+                            data: {
+                                foo: "bar"
+                            },
+                            priority: "High",
+                            to: token
+                        })
+                    }).then(function(response) {
+                        result = response.content.toJSON();
+                        console.log(result);
+                    }, function(e) {
+                        console.log("Error occurred " + e);
+                    });
+                }
+            };
+            firebase.query(onQueryEvent, "/devices/" + cleanusername, {
+                singleEvent: true,
+                orderBy: {
+                    type: firebase.QueryOrderByType.CHILD,
+                    value: 'token' // mandatory when type is 'child'
+                }
+            });
+            console.log("here")
 
         });
     }, function(error) {
@@ -182,8 +191,7 @@ var onChildEvent = function(result) {
             item.set("name", image);
             imageItems.push(item);
 
-        },
-            function(error) {
+        }, function(error) {
             console.log("File download error: " + error);
         });
     }
@@ -201,14 +209,12 @@ function listitem(args) {
 function deleteitem(args) {
     var folder = documents.getFolder("downloads");
 
-
     var file = folder.getFile((args.object.img).toString());
-file.remove()
-    .then(function (result) {
-mainViewModel.set("imageItems", imageItems);
-imageItems.pop(args.object.index);
+    file.remove().then(function(result) {
+        mainViewModel.set("imageItems", imageItems);
+        imageItems.pop(args.object.index);
 
-    }, function (error) {
+    }, function(error) {
         // Failed to remove the file.
     });
 }
@@ -221,13 +227,12 @@ exports.logout = function() {
 };
 exports.listitem = listitem;
 exports.delete = deleteitem;
-exports.deleteall = function(){
-var folder = documents.getFolder("downloads");
-folder.clear()
-    .then(function () {
+exports.deleteall = function() {
+    var folder = documents.getFolder("downloads");
+    folder.clear().then(function() {
         mainViewModel.set("imageItems", imageItems);
-            imageItems.splice(0,imageItems.length)
-    }, function (error) {
+        imageItems.splice(0, imageItems.length)
+    }, function(error) {
         // Failed to clear the folder.
     });
 }

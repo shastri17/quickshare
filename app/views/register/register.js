@@ -16,11 +16,9 @@ function completeRegistration() {
             appSettings.setString('email', data["email"]);
             appSettings.setString('password', data["password"]);
             var cleanusername = data["email"].replace("@gmail.com", "");
-            firebase.setValue(
-         '/devices/'+cleanusername,
-         {
-         'token': appSettings.getString('token', 'not set')
-     }).then(function(result) {
+            firebase.setValue('/devices/' + cleanusername, {
+                'token': appSettings.getString('token', 'not set')
+            }).then(function(result) {
                 console.log("created key: " + result.key);
             });
             frameModule.topmost().navigate("views/share/share");
