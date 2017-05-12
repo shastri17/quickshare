@@ -1,0 +1,118 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "nativescript-loading-indicator",
+        "scope": null,
+        "escapedName": "nativescript-loading-indicator",
+        "name": "nativescript-loading-indicator",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "/Users/hackintosh/Projects/quickshare"
+    ]
+  ],
+  "_from": "nativescript-loading-indicator@latest",
+  "_id": "nativescript-loading-indicator@2.3.2",
+  "_inCache": true,
+  "_location": "/nativescript-loading-indicator",
+  "_nodeVersion": "6.9.1",
+  "_npmOperationalInternal": {
+    "host": "packages-18-east.internal.npmjs.com",
+    "tmp": "tmp/nativescript-loading-indicator-2.3.2.tgz_1492201221784_0.550111367367208"
+  },
+  "_npmUser": {
+    "name": "walkerrunpdx",
+    "email": "walkerrunpdx@gmail.com"
+  },
+  "_npmVersion": "3.10.9",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "nativescript-loading-indicator",
+    "scope": null,
+    "escapedName": "nativescript-loading-indicator",
+    "name": "nativescript-loading-indicator",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/nativescript-loading-indicator/-/nativescript-loading-indicator-2.3.2.tgz",
+  "_shasum": "fb874a94caa9eece9756677aa5ca43f14c444672",
+  "_shrinkwrap": null,
+  "_spec": "nativescript-loading-indicator",
+  "_where": "/Users/hackintosh/Projects/quickshare",
+  "author": {
+    "name": "Nathan Walker",
+    "email": "walkerrunpdx@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/NathanWalker/nativescript-loading-indicator/issues"
+  },
+  "contributors": [
+    {
+      "name": "Pocketsmith"
+    }
+  ],
+  "dependencies": {},
+  "description": "A NativeScript plugin for showing an overlayed loading indicator.",
+  "devDependencies": {
+    "tns-core-modules": "~2.5.2",
+    "tns-platform-declarations": "^2.5.2",
+    "typescript": "~2.1.0"
+  },
+  "directories": {},
+  "dist": {
+    "shasum": "fb874a94caa9eece9756677aa5ca43f14c444672",
+    "tarball": "https://registry.npmjs.org/nativescript-loading-indicator/-/nativescript-loading-indicator-2.3.2.tgz"
+  },
+  "gitHead": "60f6e7627aabb03f2cdd31054b863cae8dddc510",
+  "homepage": "https://github.com/NathanWalker/nativescript-loading-indicator",
+  "keywords": [
+    "NativeScript",
+    "loading-indicator",
+    "Loading",
+    "Progress",
+    "MBProgressHUD",
+    "ProgressDialog"
+  ],
+  "license": "MIT",
+  "main": "loading-indicator",
+  "maintainers": [
+    {
+      "name": "maknz",
+      "email": "npm@mak.geek.nz"
+    },
+    {
+      "name": "walkerrunpdx",
+      "email": "walkerrunpdx@gmail.com"
+    }
+  ],
+  "name": "nativescript-loading-indicator",
+  "nativescript": {
+    "platforms": {
+      "android": "2.5.0",
+      "ios": "2.5.0"
+    }
+  },
+  "optionalDependencies": {},
+  "readme": "# nativescript-loading-indicator\n\n**nativescript-loading-indicator** is a plugin for NativeScript which overlays a loading indicator on the current page. Can be used, for example, to prevent the UI being interacted with while data is being fetched from an API, while informing the user that something is happening.\n\n* iOS: [MBProgressHUD](https://github.com/jdg/MBProgressHUD)\n* Android: [ProgressDialog](http://developer.android.com/reference/android/app/ProgressDialog.html)\n\n\n## Installation\n\n```bash\ntns plugin add nativescript-loading-indicator\n```\n\n## Example\n\n```js\nvar LoadingIndicator = require(\"nativescript-loading-indicator\").LoadingIndicator;\n\n// or with TypeScript:\n// import {LoadingIndicator} from \"nativescript-loading-indicator\";\n\nvar loader = new LoadingIndicator();\n\n// optional options\n// android and ios have some platform specific options\nvar options = {\n  message: 'Loading...',\n  progress: 0.65,\n  android: {\n    indeterminate: true,\n    cancelable: false,\n    max: 100,\n    progressNumberFormat: \"%1d/%2d\",\n    progressPercentFormat: 0.53,\n    progressStyle: 1,\n    secondaryProgress: 1\n  },\n  ios: {\n    details: \"Additional detail note!\",\n    margin: 10,\n    dimBackground: true,\n    color: \"#4B9ED6\", // color of indicator and labels\n    // background box around indicator\n    // hideBezel will override this if true\n    backgroundColor: \"yellow\",\n    hideBezel: true, // default false, can hide the surrounding bezel\n    view: UIView, // Target view to show on top of (Defaults to entire window)\n    mode: // see iOS specific options below\n  }\n};\n\nloader.show(options); // options is optional\n\n// Do whatever it is you want to do while the loader is showing, then\n\nloader.hide();\n```\n\n### Options\n\n* message: `string` Your message!\n* progress: `number` Set progress display\n\n#### Android Specific\n\n* Reference: http://developer.android.com/intl/zh-tw/reference/android/app/ProgressDialog.html\n\n#### iOS Specific\n\n* Reference: https://github.com/jdg/MBProgressHUD/blob/master/Demo/Classes/MBHudDemoViewController.m\n\nQuick `Mode` Reference:\n\n* `MBProgressHUDModeDeterminate`\n* `MBProgressHUDModeAnnularDeterminate`\n* `MBProgressHUDModeDeterminateHorizontalBar`\n* `MBProgressHUDModeText`\n* `MBProgressHUDModeCustomView`\n  * use with `customView: string` - local path to an image file\n\n## Screenshots\n\n<img width=\"40%\" src=\"screenshots/ios.png\" alt=\"Loading indicator on iOS\" float=\"left\">\n\n<img width=\"50%\" src=\"screenshots/android.png\" alt=\"Loading indicator on Android\" float=\"left\">\n",
+  "readmeFilename": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NathanWalker/nativescript-loading-indicator.git"
+  },
+  "scripts": {
+    "build": "tsc",
+    "demo.android": "npm run preparedemo; cd demo; tns run android --emulator",
+    "demo.ios": "npm run preparedemo; cd demo; tns run ios --emulator",
+    "preparedemo": "npm run build; cd demo; tns plugin remove nativescript-loading-indicator; tns plugin add ..; tns install",
+    "setup": "npm i; cd demo; npm install; cd ..; npm run build; cd demo; tns plugin add ..; cd .."
+  },
+  "typings": "index.d.ts",
+  "version": "2.3.2"
+}

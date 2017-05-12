@@ -17,9 +17,9 @@ firebase.init({
 }, function(error) {
     console.log("firebase.init error: " + error);
 });
-var email = appSettings.getString('email', 'not set');
+var username = appSettings.getString('username', 'not set');
 var password = appSettings.getString('password', 'not set');
-if (email != 'not set' && password != 'not set') {
+if (username != 'not set' && password != 'not set') {
     applicationModule.start({moduleName: "views/share/share"});
 } else {
     applicationModule.start({moduleName: "views/login/login"});

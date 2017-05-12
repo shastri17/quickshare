@@ -5,6 +5,7 @@
     "tns-core-modules-widgets": true,
     "nativescript-imagepicker": true,
     "nativescript-telerik-ui": true,
+    "nativescript-loading-indicator": true,
     "nativescript-permissions": true,
     "nativescript-plugin-firebase": true,
     "fs-promise": true,
@@ -49,5 +50,6 @@
     "xmldom": true,
     "uuid": true,
     "nativescript-push-notifications": true,
-    "nativescript-social-share": true
+    "nativescript-social-share": true,
+    "nativescript-theme-core": true
 }

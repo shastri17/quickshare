@@ -1,11 +1,21 @@
-<Page loaded="loaded">
-    <Page.actionBar>
-        <ActionBar title="Sign up"></ActionBar>
+<Page loaded="loaded" >
+    <Page.actionBar >
+        <ActionBar class="bg" title="signup">
+        </ActionBar>
     </Page.actionBar>
-    <StackLayout>
-        <Image src="res://logo" stretch="none" horizontalAlignment="center"/>
-        <TextField text="{{ email }}" id="email" hint="Email Address" type="email" autocorrect="false" autocapitalizationType="none"/>
-        <TextField text="{{ password }}" secure="true" hint="Password"/>
-        <Button text="Sign Up" tap="register"/>
+    <ScrollView>
+    <StackLayout orientation="vertical" class="form">
+        <Image src="res://logo" stretch="none" horizontalAlignment="center" class="image"/>
+        <StackLayout orientation="vertical" class="textfields">
+        <TextField id="username" text="{{ username }}" hint="Username" type="text" autocorrect="false" autocapitalizationType="none" class="input input-border"/>
+        <TextField id="email" text="{{ email }}" hint="Email Address" type="email" autocorrect="false" autocapitalizationType="none" class="input input-border"/>
+        <TextField secure="true" text="{{ password }}" hint="Password (must contain one number)" class="input input-border"/>
+        </StackLayout>
+        <StackLayout orientation="horizontal" class="regform">
+            <Button text="SIGN UP" class="reglink" tap="register"/>
+            <Button text="back" tap="onGoBack" class="reglink"/>
+        </StackLayout>
+
     </StackLayout>
+</ScrollView>
 </Page>

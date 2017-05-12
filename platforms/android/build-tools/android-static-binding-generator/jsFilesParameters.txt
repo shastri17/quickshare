@@ -3,6 +3,10 @@
 /Users/hackintosh/Projects/quickshare/platforms/android/src/main/assets/app/tns_modules/nativescript-background-http/background-http.js
 /Users/hackintosh/Projects/quickshare/platforms/android/src/main/assets/app/tns_modules/nativescript-imagepicker/bundle-entry-points.js
 /Users/hackintosh/Projects/quickshare/platforms/android/src/main/assets/app/tns_modules/nativescript-imagepicker/viewmodel.js
+/Users/hackintosh/Projects/quickshare/platforms/android/src/main/assets/app/tns_modules/nativescript-loading-indicator/loading-indicator.js
+/Users/hackintosh/Projects/quickshare/platforms/android/src/main/assets/app/tns_modules/nativescript-loading-indicator/src/interfaces.js
+/Users/hackintosh/Projects/quickshare/platforms/android/src/main/assets/app/tns_modules/nativescript-loading-indicator/src/android/progress-dialog.js
+/Users/hackintosh/Projects/quickshare/platforms/android/src/main/assets/app/tns_modules/nativescript-loading-indicator/src/ios/mbprogress-hud.js
 /Users/hackintosh/Projects/quickshare/platforms/android/src/main/assets/app/tns_modules/nativescript-permissions/permissions.js
 /Users/hackintosh/Projects/quickshare/platforms/android/src/main/assets/app/tns_modules/nativescript-plugin-firebase/firebase-common.js
 /Users/hackintosh/Projects/quickshare/platforms/android/src/main/assets/app/tns_modules/nativescript-plugin-firebase/firebase.js

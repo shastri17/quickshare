@@ -1,16 +1,25 @@
 
 Label {
     margin: 10;
-    horizontal-align: left;
+    horizontal-align: center;
     vertical-align: center;
-}
-
-TextField {
-    border-width: 5;
-    border-style: solid;
-    border-color: #034793;
 }
 
 Image {
     margin: 10;
+}
+
+.font{
+    color:#1366af;
+    font-size: 20px;
+    padding-bottom: 20;
+}
+.btnsize{
+    height:60;
+}
+.inputs{
+    padding-bottom: 20;
+}
+.titles{
+    text-align: right
 }

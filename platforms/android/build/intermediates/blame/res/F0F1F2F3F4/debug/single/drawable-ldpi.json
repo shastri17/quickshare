@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "/Users/hackintosh/Projects/quickshare/platforms/android/build/intermediates/res/merged/F0F1F2F3F4/debug/drawable-ldpi/ic_menu.png",
+        "source": "/Users/hackintosh/Projects/quickshare/platforms/android/src/main/res/drawable-ldpi/ic_menu.png"
+    },
+    {
+        "merged": "/Users/hackintosh/Projects/quickshare/platforms/android/build/intermediates/res/merged/F0F1F2F3F4/debug/drawable-ldpi/icon.png",
+        "source": "/Users/hackintosh/Projects/quickshare/platforms/android/src/main/res/drawable-ldpi/icon.png"
+    },
+    {
+        "merged": "/Users/hackintosh/Projects/quickshare/platforms/android/build/intermediates/res/merged/F0F1F2F3F4/debug/drawable-ldpi/ic_menu_delete.png",
+        "source": "/Users/hackintosh/Projects/quickshare/platforms/android/src/main/res/drawable-ldpi/ic_menu_delete.png"
+    },
+    {
+        "merged": "/Users/hackintosh/Projects/quickshare/platforms/android/build/intermediates/res/merged/F0F1F2F3F4/debug/drawable-ldpi/logo.png",
+        "source": "/Users/hackintosh/Projects/quickshare/platforms/android/src/main/res/drawable-ldpi/logo.png"
+    }
+]
