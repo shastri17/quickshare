@@ -1,12 +1,8 @@
 <Page loaded="pageLoaded">
     <Page.actionBar >
         <ActionBar class="bg" title="quickshare">
-            <ActionItem tap="settings"
-    android.systemIcon="ic_menu" android.position="actionBar"
-    text="Settings" android.position="popup"/>
-            <ActionItem tap="logout"
-    android.systemIcon="ic_menu" android.position="actionBar"
-    text="Logout" android.position="popup"/>
+            <ActionItem tap="settings" android.systemIcon="ic_menu" android.position="actionBar" text="Settings" android.position="popup"/>
+            <ActionItem tap="logout" android.systemIcon="ic_menu" android.position="actionBar" text="Logout" android.position="popup"/>
 
         </ActionBar>
     </Page.actionBar>
@@ -15,27 +11,27 @@
             <TabViewItem title="Transfer">
                 <TabViewItem.view>
                     <ScrollView>
-                    <StackLayout orientation="vertical" class="form">
-                    <StackLayout class="input-field">
-                        <Label class="text-right font" text="Send to" />
-                        <TextField id="username" text="{{ username }}" hint="Username" type="text" autocorrect="false" autocapitalizationType="none" class="input"/>
-                          <StackLayout class="hr-light"></StackLayout>
-                          <Label class="text-left font" text="Message" />
-                        <TextField id="message" text="{{ message }}" hint="Message(optional)" type="text" autocorrect="false" autocapitalizationType="none" class="input"/>
-  <StackLayout class="hr-light"></StackLayout>
-</StackLayout>
-<ListView items="{{ uploadItems }}">
-    <ListView.itemTemplate>
-        <GridLayout columns="180, auto" rows="*, *" class="cell-view">
-            <Image rowSpan="8" width="94" height="94" src="{{ thumb }}" tap="listitem"/>
-            <Button text="Send" row="0" col="1" tap="sendImg" img="{{ thumb }}" class="btn btn-primary"/>
-        </GridLayout>
-    </ListView.itemTemplate>
-</ListView>
-                        <Button text="Choose Image"  tap="onSelectSingleTap" class="btn btn-outline btnsize"/>
+                        <StackLayout orientation="vertical" class="form">
+                            <StackLayout class="input-field">
+                                <Label class="text-left font" text="Send to"/>
+                                <TextField id="username" text="{{ username }}" hint="Username" type="text" autocorrect="false" autocapitalizationType="none" class="input"/>
+                                <StackLayout class="hr-light"></StackLayout>
+                                <Label class="text-left font" text="Message"/>
+                                <TextField id="message" text="{{ message }}" hint="Message(optional)" type="text" autocorrect="false" autocapitalizationType="none" class="input"/>
+                                <StackLayout class="hr-light"></StackLayout>
+                            </StackLayout>
+                            <ListView items="{{ uploadItems }}">
+                                <ListView.itemTemplate>
+                                    <GridLayout columns="180, auto" rows="*, *" class="cell-view">
+                                        <Image height="200" src="{{ thumb }}" tap="listitem" class="displayimg"/>
+                                        <Button text="Send" row="0" col="1" tap="sendImg" img="{{ thumb }}" class="btn btn-primary btnsize"/>
+                                    </GridLayout>
+                                </ListView.itemTemplate>
+                            </ListView>
+                            <Button text="Choose Image" tap="onSelectSingleTap" class="btn btn-primary btnsize"/>
 
-                    </StackLayout>
-                     </ScrollView>
+                        </StackLayout>
+                    </ScrollView>
                 </TabViewItem.view>
             </TabViewItem>
             <TabViewItem title="Files">

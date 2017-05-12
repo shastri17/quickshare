@@ -21,6 +21,21 @@ var http = require("http");
 var counter = 0;
 var applicationModule = require("application");
 var ui = require("ui/frame")
+var LoadingIndicator = require("nativescript-loading-indicator").LoadingIndicator;
+var loader = new LoadingIndicator();
+var options = {
+    message: 'Sending...',
+    progress: 0.65,
+    android: {
+        indeterminate: true,
+        cancelable: false,
+        max: 100,
+        progressNumberFormat: "%1d/%2d",
+        progressPercentFormat: 0.53,
+        progressStyle: 1,
+        secondaryProgress: 1
+    }
+};
 function pageLoaded(args) {
     page = args.object;
     page.bindingContext = mainViewModel;
@@ -70,6 +85,7 @@ function onSelectSingleTap(args) {
 }
 
 function sendImages(fileUri, args) {
+    loader.show(options);
     var message = mainViewModel.get('message');
     var sender = appSettings.getString('username', 'not set');
     var receiver = mainViewModel.get('username').replace(/\s/g, "");
@@ -83,6 +99,7 @@ function sendImages(fileUri, args) {
             console.log("Percentage complete: " + status.percentageCompleted);
         }
     }).then(function(uploadedFile) {
+        loader.hide()
         console.log("File uploaded: " + JSON.stringify(uploadedFile));
         mainViewModel.set('username', '')
         mainViewModel.set('message', '')
@@ -224,7 +241,7 @@ function deleteitem(args) {
         // Failed to remove the file.
     });
 }
-function sendImg(args){
+function sendImg(args) {
     sendImages(args.object.img, args);
 }
 exports.mainViewModel = mainViewModel;
@@ -232,12 +249,15 @@ exports.pageLoaded = pageLoaded;
 exports.onSelectSingleTap = onSelectSingleTap;
 exports.logout = function() {
     appSettings.clear();
-    frameModule.topmost().navigate({moduleName:"views/login/login",animated: true,
-transition: {
-    name: "slideRight",
-    duration: 380,
-    curve: "easeIn"
-}});
+    frameModule.topmost().navigate({
+        moduleName: "views/login/login",
+        animated: true,
+        transition: {
+            name: "slideRight",
+            duration: 380,
+            curve: "easeIn"
+        }
+    });
 };
 exports.listitem = listitem;
 exports.delete = deleteitem;

@@ -1,25 +1,25 @@
-
 Label {
     margin: 10;
-    horizontal-align: center;
-    vertical-align: center;
 }
 
-Image {
-    margin: 10;
-}
-
-.font{
-    color:#1366af;
+.font {
+    color: #1366af;
     font-size: 20px;
     padding-bottom: 20;
 }
-.btnsize{
-    height:60;
+
+.btnsize {
+    height: 60;
 }
-.inputs{
+
+.displayimg {
+    margin-left: 5;
+}
+
+.inputs {
     padding-bottom: 20;
 }
-.titles{
+
+.titles {
     text-align: right
 }
