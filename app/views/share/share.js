@@ -12,11 +12,15 @@ var appPath = fs.knownFolders.currentApp().path;
 var firebase = require("nativescript-plugin-firebase");
 var imageItems = new observableArray.ObservableArray();
 var uploadItems = new observableArray.ObservableArray();
+var uploadedItems = new observableArray.ObservableArray();
 var mainViewModel = new observable.Observable();
 var imageSource = require("image-source");
 var documents = fs.knownFolders.documents();
 var page;
 var imageName;
+
+var PhotoViewer = require("nativescript-photoviewer");
+photoViewer = new PhotoViewer();
 var http = require("http");
 var counter = 0;
 var applicationModule = require("application");
@@ -42,15 +46,32 @@ function pageLoaded(args) {
     titleusername = appSettings.getString('username', 'not set');
     page.bindingContext.titleusername = titleusername;
 }
+var myImages = {}
 var folder = documents.getFolder("downloads");
+var user = appSettings.getString('username', 'not set');
+folder.getEntities().then(function(mainentities) {
+    mainentities.forEach(function(mainentity) {
+    var mainfolder = folder.getFolder(mainentity.name);
+    mainfolder.getEntities().then(function(subentities) {
+        var currarr = []
+    subentities.forEach(function(subentity) {
+    var final_url = 'file://'+subentity.path
+    currarr.push(final_url)
+
+    })
+    myImages[mainentity.name] = currarr
+    console.log(myImages[mainentity.name])
+})
+})
+})
+
 folder.getEntities().then(function(entities) {
     mainViewModel.set("imageItems", imageItems);
     // entities is array with the document's files and folders.
     entities.forEach(function(entity) {
         console.log(entity.name)
         var item = new observable.Observable();
-        item.set("thumb", folder.path + '/' + entity.name);
-        item.set("name", entity.name);
+        item.set("foldername", entity.name);
         imageItems.push(item);
     });
 }, function(error) {
@@ -69,7 +90,7 @@ function onSelectSingleTap(args) {
                 entities.forEach(function(entity) {
                     console.log(entity.name)
                     var item = new observable.Observable();
-                    item.set("thumb", folder.path + '/' + entity.name);
+                    item.set("foldername", entity.name);
                     imageItems.push(item);
                 });
             }, function(error) {
@@ -92,7 +113,7 @@ function sendImages(fileUri, args) {
     console.log(receiver)
     imageName = extractImageName(fileUri);
     firebase.uploadFile({
-        remoteFullPath: 'uploads/images/' + receiver + '/' + imageName,
+        remoteFullPath: 'uploads/images/' + receiver + '/' + sender +'/' + imageName,
         localFullPath: fileUri,
         onProgress: function(status) {
             console.log("Uploaded fraction: " + status.fractionCompleted);
@@ -104,7 +125,7 @@ function sendImages(fileUri, args) {
         mainViewModel.set('username', '')
         mainViewModel.set('message', '')
         var token = ""
-        firebase.push('/userbucket/' + receiver, {
+        firebase.push('/transferbucket/' + receiver + '/' + sender, {
             'sender': sender,
             'receiver': receiver,
             'message': message,
@@ -179,7 +200,6 @@ function startSelection(context) {
                 var item = new observable.Observable();
                 item.set("thumb", selected_item.fileUri);
                 uploadItems.push(item);
-
                 counter++;
             })
 
@@ -199,35 +219,48 @@ var onChildEvent = function(result) {
     console.log("Event type: " + result.type);
     console.log("Key: " + result.key);
     console.log("Value: " + JSON.stringify(result.value));
-    var receiver = result.value['receiver']
+var keyNames = Object.keys(result.value);
+console.log(keyNames)
+for( var key in keyNames){
+    var i = keyNames[key]
+    console.log(i)
+var myobj = result.value[i]
+console.log(JSON.stringify(myobj))
+    var receiver = myobj['receiver']
     var user = appSettings.getString('username', 'not set');
-    if (result.value['downloaded'] != true) {
-        var image = result.value["filename"]["0"];
-        var folder = documents.getFolder("downloads");
-        var logoPath = folder.path + '/' + image
+    var image = myobj["filename"]["0"];
+    var folder = documents.getFolder("downloads");
+    var logoPath = folder.path + '/' +myobj['sender'] + '/' + image
+    if (myobj['downloaded'] != true) {
+        path = '/transferbucket/' + receiver + '/' + myobj['sender'] + '/'+ i
+        console.log(path)
         firebase.downloadFile({
-            remoteFullPath: 'uploads/images/' + user + '/' + result.value["filename"]["0"],
+            remoteFullPath: 'uploads/images/' + user + '/' +myobj['sender'] + '/'+ myobj["filename"]["0"],
             localFile: fs.File.fromPath(logoPath)
         }).then(function(uploadedFile) {
-            firebase.update('/userbucket/' + receiver + '/' + result.key, {downloaded: true});
-            var item = new observable.Observable();
-            item.set("thumb", logoPath);
-            item.set("name", image);
-            imageItems.push(item);
-
+            firebase.update(path, {downloaded: true});
         }, function(error) {
             console.log("File download error: " + error);
         });
     }
+    mainViewModel.set("uploadedItems", uploadedItems);
+    var item = new observable.Observable();
+     item.set("thumb", logoPath);
+     item.set("name", image);
+     uploadedItems.push(item);
 };
+}
 var senderlistener = appSettings.getString('username', 'not set');
-firebase.addChildEventListener(onChildEvent, "/userbucket/" + senderlistener).then(function(listenerWrapper) {
+firebase.addChildEventListener(onChildEvent, "/transferbucket/" + senderlistener).then(function(listenerWrapper) {
     var path = listenerWrapper.path;
     var listeners = listenerWrapper.listeners;
 });
 
 function listitem(args) {
-    frameModule.topmost().navigate({moduleName: "views/share/full-screen-page", context: args.object.src});
+
+    console.log(JSON.stringify(myImages))
+    photoViewer.showViewer(myImages[args.object.text]);
+
 }
 function deleteitem(args) {
     var folder = documents.getFolder("downloads");

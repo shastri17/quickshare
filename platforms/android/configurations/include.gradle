@@ -1,4 +1,4 @@
 
 android {
-    flavorDimensions "nativescriptbackgroundhttp", "nativescriptpluginfirebase", "nativescriptpushnotifications", "nativescripttelerikui", "tnscoremoduleswidgets"
+    flavorDimensions "nativescriptbackgroundhttp", "nativescriptphotoviewer", "nativescriptpluginfirebase", "nativescriptpushnotifications", "nativescripttelerikui", "tnscoremoduleswidgets"
 }

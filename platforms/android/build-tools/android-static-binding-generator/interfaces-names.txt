@@ -12,6 +12,13 @@ com.google.gson.JsonDeserializer
 com.google.gson.JsonSerializationContext
 com.google.gson.JsonSerializer
 com.google.gson.TypeAdapterFactory
+com.squareup.picasso.Cache
+com.squareup.picasso.Callback
+com.squareup.picasso.Downloader
+com.squareup.picasso.Picasso.Listener
+com.squareup.picasso.Picasso.RequestTransformer
+com.squareup.picasso.Target
+com.squareup.picasso.Transformation
 android.support.annotation.XmlRes
 android.support.annotation.MainThread
 android.support.annotation.RequiresPermission.Read
@@ -1005,6 +1012,8 @@ android.support.design.widget.BaseTransientBottomBar.OnAttachStateChangeListener
 android.support.design.widget.FloatingActionButtonImpl.InternalVisibilityChangedListener
 android.support.design.internal.NavigationMenuPresenter.NavigationMenuItem
 android.support.design.internal.package-info
+android.support.v7.graphics.Palette.PaletteAsyncListener
+android.support.v7.graphics.Palette.Filter
 android.support.v7.widget.RecyclerView.ItemAnimator.ItemAnimatorListener
 android.support.v7.widget.RecyclerView.LayoutManager.LayoutPrefetchRegistry
 android.support.v7.widget.RecyclerView.SmoothScroller.ScrollVectorProvider
@@ -1207,6 +1216,8 @@ android.support.transition.TransitionInterface
 android.support.transition.TransitionPort.TransitionListener
 android.support.transition.VisibilityImpl
 android.support.transition.VisibilityInterface
+com.etiennelawlor.imagegallery.library.adapters.ImageGalleryAdapter.OnImageClickListener
+com.etiennelawlor.imagegallery.library.view.TouchImageView.OnTouchImageViewListener
 com.google.android.gms.common.api.Api.zzb
 com.google.android.gms.common.api.Api.ApiOptions.HasOptions
 com.google.android.gms.common.api.Api.ApiOptions.NotRequiredOptions

@@ -7,6 +7,7 @@
     "nativescript-telerik-ui": true,
     "nativescript-loading-indicator": true,
     "nativescript-permissions": true,
+    "nativescript-photoviewer": true,
     "nativescript-plugin-firebase": true,
     "fs-promise": true,
     "any-promise": true,

@@ -1,0 +1,60 @@
+@import {
+    url('~/platform.css')
+}
+
+;
+@import '~/nativescript-theme-core/css/core.light.css';
+Page {
+    background-color: white;
+    font-size: 17;
+}
+
+TextField {
+    margin: 10;
+    padding: ;
+}
+
+.textfields {
+    margin-bottom: 10
+}
+
+.mainlogo {
+    margin-top: 20;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 30;
+}
+
+Button {
+    margin: 5;
+    padding: 10;
+    height: 50
+}
+
+ActionBar {
+    color: black;
+}
+
+.bg {
+    background-color: #d4d5d8;
+    text-align: left;
+}
+
+.loginlink {
+    background-color: #000000;
+    color: white;
+}
+
+.reglink {
+    background-color: #000000;
+    color: white;
+    width: 150
+}
+
+.regform {
+    padding-left: 20
+}
+
+.maintext {
+    margin-top: 15px;
+}

@@ -23,7 +23,7 @@
                             <ListView items="{{ uploadItems }}">
                                 <ListView.itemTemplate>
                                     <GridLayout columns="180, auto" rows="*, *" class="cell-view">
-                                        <Image height="200" src="{{ thumb }}" tap="listitem" class="displayimg"/>
+                                        <Image height="200" src="{{ thumb }}"  tap="listitem" class="displayimg"/>
                                         <Button text="Send" row="0" col="1" tap="sendImg" img="{{ thumb }}" class="btn btn-primary btnsize"/>
                                     </GridLayout>
                                 </ListView.itemTemplate>
@@ -34,6 +34,21 @@
                     </ScrollView>
                 </TabViewItem.view>
             </TabViewItem>
+            <TabViewItem title="Recent">
+                <TabViewItem.view>
+
+                    <StackLayout rows="*, auto, auto" class="pick-page">
+                        <Button text="Delete all" tap="deleteall" class="logout"/>
+                        <ListView items="{{ uploadedItems }}">
+                            <ListView.itemTemplate>
+                                <GridLayout columns="180, auto" rows="*, *" class="cell-view">
+                                    <Image height="200" src="{{ thumb }}"  tap="listimage" class="displayimg"/>
+                                </GridLayout>
+                            </ListView.itemTemplate>
+                        </ListView>
+                    </StackLayout>
+                </TabViewItem.view>
+            </TabViewItem>
             <TabViewItem title="Files">
                 <TabViewItem.view>
 
@@ -42,8 +57,7 @@
                         <ListView items="{{ imageItems }}">
                             <ListView.itemTemplate>
                                 <GridLayout columns="180, auto" rows="*, *" class="cell-view">
-                                    <Image rowSpan="8" width="94" height="94" src="{{ thumb }}" tap="listitem"/>
-                                    <Button text="Delete" row="0" col="1" tap="delete" img="{{ name}}" class="logout"/>
+                                    <Button text="{{ foldername }}" tap="listitem" class="btn btn-primary"/>
                                 </GridLayout>
                             </ListView.itemTemplate>
                         </ListView>
