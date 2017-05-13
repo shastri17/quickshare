@@ -36,7 +36,7 @@ var options = {
         max: 100,
         progressNumberFormat: "%1d/%2d",
         progressPercentFormat: 0.53,
-        progressStyle: 1,
+        progressStyle: 2,
         secondaryProgress: 1
     }
 };
@@ -51,18 +51,18 @@ var folder = documents.getFolder("downloads");
 var user = appSettings.getString('username', 'not set');
 folder.getEntities().then(function(mainentities) {
     mainentities.forEach(function(mainentity) {
-    var mainfolder = folder.getFolder(mainentity.name);
-    mainfolder.getEntities().then(function(subentities) {
-        var currarr = []
-    subentities.forEach(function(subentity) {
-    var final_url = 'file://'+subentity.path
-    currarr.push(final_url)
+        var mainfolder = folder.getFolder(mainentity.name);
+        mainfolder.getEntities().then(function(subentities) {
+            var currarr = []
+            subentities.forEach(function(subentity) {
+                var final_url = 'file://' + subentity.path
+                currarr.push(final_url)
 
+            })
+            myImages[mainentity.name] = currarr
+            console.log(myImages[mainentity.name])
+        })
     })
-    myImages[mainentity.name] = currarr
-    console.log(myImages[mainentity.name])
-})
-})
 })
 
 folder.getEntities().then(function(entities) {
@@ -72,7 +72,10 @@ folder.getEntities().then(function(entities) {
         console.log(entity.name)
         var item = new observable.Observable();
         item.set("foldername", entity.name);
+        if(!(entity.name in imageItems )){
+            console.log("here")
         imageItems.push(item);
+    }
     });
 }, function(error) {
     console.error(error.message);
@@ -83,7 +86,21 @@ function onSelectSingleTap(args) {
     if (platformModule.device.os === "Android" && platformModule.device.sdkVersion >= 23) {
         permissions.requestPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE, "I need these permissions to read from storage").then(function() {
             startSelection(context);
-            var folder = documents.getFolder("downloads");
+            folder.getEntities().then(function(mainentities) {
+                mainentities.forEach(function(mainentity) {
+                    var mainfolder = folder.getFolder(mainentity.name);
+                    mainfolder.getEntities().then(function(subentities) {
+                        var currarr = []
+                        subentities.forEach(function(subentity) {
+                            var final_url = 'file://' + subentity.path
+                            currarr.push(final_url)
+
+                        })
+                        myImages[mainentity.name] = currarr
+                        console.log(myImages[mainentity.name])
+                    })
+                })
+            })
             folder.getEntities().then(function(entities) {
                 mainViewModel.set("imageItems", imageItems);
                 // entities is array with the document's files and folders.
@@ -91,7 +108,11 @@ function onSelectSingleTap(args) {
                     console.log(entity.name)
                     var item = new observable.Observable();
                     item.set("foldername", entity.name);
-                    imageItems.push(item);
+
+        console.log("here")
+    imageItems.push(item);
+
+
                 });
             }, function(error) {
                 console.error(error.message);
@@ -113,7 +134,7 @@ function sendImages(fileUri, args) {
     console.log(receiver)
     imageName = extractImageName(fileUri);
     firebase.uploadFile({
-        remoteFullPath: 'uploads/images/' + receiver + '/' + sender +'/' + imageName,
+        remoteFullPath: 'uploads/images/' + receiver + '/' + sender + '/' + imageName,
         localFullPath: fileUri,
         onProgress: function(status) {
             console.log("Uploaded fraction: " + status.fractionCompleted);
@@ -200,6 +221,41 @@ function startSelection(context) {
                 var item = new observable.Observable();
                 item.set("thumb", selected_item.fileUri);
                 uploadItems.push(item);
+                folder.getEntities().then(function(mainentities) {
+                    mainentities.forEach(function(mainentity) {
+                        var mainfolder = folder.getFolder(mainentity.name);
+                        mainfolder.getEntities().then(function(subentities) {
+                            var currarr = []
+                            subentities.forEach(function(subentity) {
+                                var final_url = 'file://' + subentity.path
+                                currarr.push(final_url)
+
+                            })
+                            myImages[mainentity.name] = currarr
+                            console.log(myImages[mainentity.name])
+                        })
+                    })
+                })
+                folder.getEntities().then(function(entities) {
+                    mainViewModel.set("imageItems", imageItems);
+                    // entities is array with the document's files and folders.
+                    entities.forEach(function(entity) {
+                        console.log(entity.name)
+                        var item = new observable.Observable();
+                        item.set("foldername", entity.name);
+                        var match = ko.utils.arrayFirst(imageItems(), function(itemd) {
+            return item.id === itemd.id;
+        });
+
+        if (!match) {
+            console.log("here")
+        imageItems.push(item);
+        }
+
+                    });
+                }, function(error) {
+                    console.error(error.message);
+                });
                 counter++;
             })
 
@@ -219,36 +275,73 @@ var onChildEvent = function(result) {
     console.log("Event type: " + result.type);
     console.log("Key: " + result.key);
     console.log("Value: " + JSON.stringify(result.value));
-var keyNames = Object.keys(result.value);
-console.log(keyNames)
-for( var key in keyNames){
-    var i = keyNames[key]
-    console.log(i)
-var myobj = result.value[i]
-console.log(JSON.stringify(myobj))
-    var receiver = myobj['receiver']
-    var user = appSettings.getString('username', 'not set');
-    var image = myobj["filename"]["0"];
-    var folder = documents.getFolder("downloads");
-    var logoPath = folder.path + '/' +myobj['sender'] + '/' + image
-    if (myobj['downloaded'] != true) {
-        path = '/transferbucket/' + receiver + '/' + myobj['sender'] + '/'+ i
-        console.log(path)
-        firebase.downloadFile({
-            remoteFullPath: 'uploads/images/' + user + '/' +myobj['sender'] + '/'+ myobj["filename"]["0"],
-            localFile: fs.File.fromPath(logoPath)
-        }).then(function(uploadedFile) {
-            firebase.update(path, {downloaded: true});
+    var keyNames = Object.keys(result.value);
+    console.log(keyNames)
+    for (var key in keyNames) {
+        var i = keyNames[key]
+        console.log(i)
+        var myobj = result.value[i]
+        console.log(JSON.stringify(myobj))
+        var receiver = myobj['receiver']
+        var user = appSettings.getString('username', 'not set');
+        var image = myobj["filename"]["0"];
+        var folder = documents.getFolder("downloads");
+        var logoPath = folder.path + '/' + myobj['sender'] + '/' + image
+        if (myobj['downloaded'] != true) {
+            path = '/transferbucket/' + receiver + '/' + myobj['sender'] + '/' + i
+            console.log(path)
+            firebase.downloadFile({
+                remoteFullPath: 'uploads/images/' + user + '/' + myobj['sender'] + '/' + myobj["filename"]["0"],
+                localFile: fs.File.fromPath(logoPath)
+            }).then(function(uploadedFile) {
+                firebase.update(path, {downloaded: true});
+            }, function(error) {
+                console.log("File download error: " + error);
+            });
+        }
+        folder.getEntities().then(function(mainentities) {
+            mainentities.forEach(function(mainentity) {
+                var mainfolder = folder.getFolder(mainentity.name);
+                mainfolder.getEntities().then(function(subentities) {
+                    var currarr = []
+                    subentities.forEach(function(subentity) {
+                        var final_url = 'file://' + subentity.path
+                        currarr.push(final_url)
+
+                    })
+                    myImages[mainentity.name] = currarr
+                    console.log(myImages[mainentity.name])
+                })
+            })
+        })
+        folder.getEntities().then(function(entities) {
+            mainViewModel.set("imageItems", imageItems);
+            // entities is array with the document's files and folders.
+            entities.forEach(function(entity) {
+                console.log(entity.name)
+                var item = new observable.Observable();
+                item.set("foldername", entity.name);
+//                 var match = ko.utils.arrayFirst(imageItems(), function(itemd) {
+//     return item.id === itemd.id;
+// });
+//
+// if (!match) {
+//     console.log("here")
+imageItems.push(item);
+
+
+            });
         }, function(error) {
-            console.log("File download error: " + error);
+            console.error(error.message);
         });
-    }
-    mainViewModel.set("uploadedItems", uploadedItems);
-    var item = new observable.Observable();
-     item.set("thumb", logoPath);
-     item.set("name", image);
-     uploadedItems.push(item);
-};
+        mainViewModel.set("uploadedItems", uploadedItems);
+        var item = new observable.Observable();
+        item.set("thumb", logoPath);
+if (uploadedItems.indexOf(item) <0) {
+console.log("here")
+uploadedItems.push(item);
+}
+    };
 }
 var senderlistener = appSettings.getString('username', 'not set');
 firebase.addChildEventListener(onChildEvent, "/transferbucket/" + senderlistener).then(function(listenerWrapper) {
