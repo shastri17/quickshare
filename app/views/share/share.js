@@ -321,14 +321,11 @@ var onChildEvent = function(result) {
                 console.log(entity.name)
                 var item = new observable.Observable();
                 item.set("foldername", entity.name);
-//                 var match = ko.utils.arrayFirst(imageItems(), function(itemd) {
-//     return item.id === itemd.id;
-// });
-//
-// if (!match) {
-//     console.log("here")
-imageItems.push(item);
 
+if (imageItems.indexOf(item)>0) {
+    console.log("here1")
+imageItems.push(item);
+}
 
             });
         }, function(error) {
