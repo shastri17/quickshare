@@ -182,7 +182,7 @@ function sendImages(fileUri, args) {
                 // in the order specified in the query
                 if (!result.error) {
                     token = result.value['token']
-                    text = sender + " sent you a new photo!\n" + "Message: " + result.value['message']
+                    text = sender + " sent you a new photo!\n" + "Message: " + message
                     http.request({
                         url: "https://fcm.googleapis.com/fcm/send",
                         method: "POST",
