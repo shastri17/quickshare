@@ -38,12 +38,10 @@ function completeRegistration() {
             appSettings.setString('username', username);
             appSettings.setString('password', password);
             firebase.setValue('/users/' + username, {'email': email}).then(function(result) {
-                console.log("created key: " + result.key);
             });
             firebase.setValue('/devices/' + username, {
                 'token': appSettings.getString('token', 'not set')
             }).then(function(result) {
-                console.log("created key: " + result.key);
             });
             loader.hide();
             frameModule.topmost().navigate({
@@ -58,7 +56,6 @@ function completeRegistration() {
             });
         }).catch(function(error) {
             var message = "";
-            console.log(error);
             if (error == 'Creating a user failed. com.google.firebase.FirebaseException: An internal error has occurred. [ WEAK_PASSWORD  ]')
                 message = "Password requires atleast one number."
             else if (error == 'Creating a user failed. com.google.firebase.auth.FirebaseAuthUserCollisionException: The email address is already in use by another account.')

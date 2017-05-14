@@ -11,7 +11,9 @@ Label {
 .btnsize {
     height: 60;
 }
-
+.btnxsize{
+    height:100;
+}
 .displayimg {
     margin-left: 5;
 }

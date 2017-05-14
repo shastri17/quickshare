@@ -49,7 +49,6 @@ exports.signIn = function(args) {
             }
         });
     }).catch(function(error) {
-        console.log(error);
         dialogsModule.alert({title: "Error", message: "Wrong username or password", okButtonText: "Try again"}).then(function() {
             loader.hide();
         });

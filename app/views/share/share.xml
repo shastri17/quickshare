@@ -38,11 +38,14 @@
                 <TabViewItem.view>
 
                     <StackLayout rows="*, auto, auto" class="pick-page">
-                        <Button text="Delete all" tap="deleteall" class="logout"/>
+                        <Button text="Delete all" tap="deleteall" class="btn btn-outline btnsize"/>
                         <ListView items="{{ uploadedItems }}">
                             <ListView.itemTemplate>
-                                <GridLayout columns="180, auto" rows="*, *" class="cell-view">
-                                    <Image height="200" src="{{ thumb }}"  tap="listimage" class="displayimg"/>
+                                <GridLayout columns="200, 150" rows="200,70" class="cell-view">
+                                    <Label class="text-left font" row="0" col="1" text="From"/>
+                                    <Label class="text-right font" row="0" col="1" text="{{ sender }}"/>
+                                    <Image height="200" src="{{ thumb }}"  tap="viewimage" class="displayimg"/>
+                                    <Button text="Delete" tap="deleteitem" img="{{ name }}" sender="{{ sender }}" col="1" class="btn btn-primary btnsize"/>
                                 </GridLayout>
                             </ListView.itemTemplate>
                         </ListView>
@@ -53,11 +56,11 @@
                 <TabViewItem.view>
 
                     <StackLayout rows="*, auto, auto" class="pick-page">
-                        <Button text="Delete all" tap="deleteall" class="logout"/>
+                        <Button text="Delete all" tap="deleteall" class="btn btn-outline btnsize"/>
                         <ListView items="{{ imageItems }}">
                             <ListView.itemTemplate>
                                 <GridLayout columns="180, auto" rows="*, *" class="cell-view">
-                                    <Button text="{{ foldername }}" tap="listitem" class="btn btn-primary"/>
+                                    <Button text="{{ foldername }}" tap="listitem" class="btn btn-primary btnxsize"/>
                                 </GridLayout>
                             </ListView.itemTemplate>
                         </ListView>

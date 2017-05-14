@@ -18,7 +18,7 @@ var imageSource = require("image-source");
 var documents = fs.knownFolders.documents();
 var page;
 var imageName;
-
+mainViewModel.set("uploadedItems", uploadedItems);
 var PhotoViewer = require("nativescript-photoviewer");
 photoViewer = new PhotoViewer();
 var http = require("http");
@@ -56,27 +56,52 @@ folder.getEntities().then(function(mainentities) {
             var currarr = []
             subentities.forEach(function(subentity) {
                 var final_url = 'file://' + subentity.path
-                currarr.push(final_url)
+                currarr.unshift(final_url)
 
             })
             myImages[mainentity.name] = currarr
-            console.log(myImages[mainentity.name])
+
         })
     })
 })
+folder.getEntities().then(function(mainentities) {
+    mainentities.forEach(function(mainentity) {
 
-folder.getEntities().then(function(entities) {
+        var mainfolder = folder.getFolder(mainentity.name);
+        mainfolder.getEntities().then(function(subentities) {
+            subentities.forEach(function(subentity) {
+                var final_url = 'file://' + subentity.path
+                var item = new observable.Observable();
+                item.set("thumb", final_url);
+                item.set("sender", mainentity.name)
+                item.set("name", subentity.name)
+                uploadedItems.unshift(item);
+
+            })
+        })
+    })
+})
+folder.getEntities().then(function(mainentities) {
     mainViewModel.set("imageItems", imageItems);
-    // entities is array with the document's files and folders.
-    entities.forEach(function(entity) {
-        console.log(entity.name)
-        var item = new observable.Observable();
-        item.set("foldername", entity.name);
-        if(!(entity.name in imageItems )){
-            console.log("here")
-        imageItems.push(item);
-    }
-    });
+    mainentities.forEach(function(mainentity) {
+
+        var mainfolder = folder.getFolder(mainentity.name);
+        mainfolder.getEntities().then(function(entities) {
+            var entitylen = 0;
+            // entities is array with the document's files and folders.
+            entities.forEach(function(entity) {
+                entitylen = entitylen + 1;
+
+            });
+            if (entitylen != 0) {
+                var item = new observable.Observable();
+                item.set("foldername", mainentity.name);
+
+                imageItems.unshift(item);
+
+            }
+        })
+    })
 }, function(error) {
     console.error(error.message);
 });
@@ -93,33 +118,36 @@ function onSelectSingleTap(args) {
                         var currarr = []
                         subentities.forEach(function(subentity) {
                             var final_url = 'file://' + subentity.path
-                            currarr.push(final_url)
+                            currarr.unshift(final_url)
 
                         })
                         myImages[mainentity.name] = currarr
-                        console.log(myImages[mainentity.name])
                     })
                 })
             })
-            folder.getEntities().then(function(entities) {
+            folder.getEntities().then(function(mainentities) {
                 mainViewModel.set("imageItems", imageItems);
-                // entities is array with the document's files and folders.
-                entities.forEach(function(entity) {
-                    console.log(entity.name)
-                    var item = new observable.Observable();
-                    item.set("foldername", entity.name);
+                mainentities.forEach(function(mainentity) {
+                    var mainfolder = folder.getFolder(mainentity.name);
+                    mainfolder.getEntities().then(function(entities) {
+                        var entitylen = 0;
+                        // entities is array with the document's files and folders.
+                        entities.forEach(function(entity) {
+                            entitylen = entitylen + 1;
+                        });
+                        if (entitylen != 0) {
+                            var item = new observable.Observable();
+                            item.set("foldername", mainentity.name);
 
-        console.log("here")
-    imageItems.push(item);
+                            imageItems.unshift(item);
 
-
-                });
+                        }
+                    })
+                })
             }, function(error) {
                 console.error(error.message);
             });
-        }).catch(function() {
-            console.log("Uh oh, no permissions - plan B time!");
-        });
+        }).catch(function() {});
     } else {
         startSelection(context);
 
@@ -131,18 +159,13 @@ function sendImages(fileUri, args) {
     var message = mainViewModel.get('message');
     var sender = appSettings.getString('username', 'not set');
     var receiver = mainViewModel.get('username').replace(/\s/g, "");
-    console.log(receiver)
     imageName = extractImageName(fileUri);
     firebase.uploadFile({
         remoteFullPath: 'uploads/images/' + receiver + '/' + sender + '/' + imageName,
         localFullPath: fileUri,
-        onProgress: function(status) {
-            console.log("Uploaded fraction: " + status.fractionCompleted);
-            console.log("Percentage complete: " + status.percentageCompleted);
-        }
+        onProgress: function(status) {}
     }).then(function(uploadedFile) {
         loader.hide()
-        console.log("File uploaded: " + JSON.stringify(uploadedFile));
         mainViewModel.set('username', '')
         mainViewModel.set('message', '')
         var token = ""
@@ -153,18 +176,13 @@ function sendImages(fileUri, args) {
             'filename': imageName,
             downloaded: false
         }).then(function(result) {
-            console.log("created key: " + result.key);
             uploadItems.pop(args.object.index);
             var onQueryEvent = function(result) {
                 // note that the query returns 1 match at a time
                 // in the order specified in the query
                 if (!result.error) {
-                    console.log("Event type: " + result.type);
-                    console.log("Key: " + result.key);
-                    console.log("Value: " + JSON.stringify(result.value));
-                    console.log(result.value['token'])
                     token = result.value['token']
-                    text = sender + " sent you a new photo!"
+                    text = sender + " sent you a new photo!\n" + "Message: " + result.value['message']
                     http.request({
                         url: "https://fcm.googleapis.com/fcm/send",
                         method: "POST",
@@ -187,10 +205,7 @@ function sendImages(fileUri, args) {
                         })
                     }).then(function(response) {
                         result = response.content.toJSON();
-                        console.log(result);
-                    }, function(e) {
-                        console.log("Error occurred " + e);
-                    });
+                    }, function(e) {});
                 }
             };
             firebase.query(onQueryEvent, "/devices/" + receiver, {
@@ -202,9 +217,7 @@ function sendImages(fileUri, args) {
             });
 
         });
-    }, function(error) {
-        console.log("File upload error: " + error);
-    });
+    }, function(error) {});
 }
 
 function startSelection(context) {
@@ -220,7 +233,7 @@ function startSelection(context) {
                 uploadItems.splice(0, uploadItems.length)
                 var item = new observable.Observable();
                 item.set("thumb", selected_item.fileUri);
-                uploadItems.push(item);
+                uploadItems.unshift(item);
                 folder.getEntities().then(function(mainentities) {
                     mainentities.forEach(function(mainentity) {
                         var mainfolder = folder.getFolder(mainentity.name);
@@ -228,31 +241,32 @@ function startSelection(context) {
                             var currarr = []
                             subentities.forEach(function(subentity) {
                                 var final_url = 'file://' + subentity.path
-                                currarr.push(final_url)
+                                currarr.unshift(final_url)
 
                             })
                             myImages[mainentity.name] = currarr
-                            console.log(myImages[mainentity.name])
                         })
                     })
                 })
-                folder.getEntities().then(function(entities) {
+                folder.getEntities().then(function(mainentities) {
                     mainViewModel.set("imageItems", imageItems);
-                    // entities is array with the document's files and folders.
-                    entities.forEach(function(entity) {
-                        console.log(entity.name)
-                        var item = new observable.Observable();
-                        item.set("foldername", entity.name);
-                        var match = ko.utils.arrayFirst(imageItems(), function(itemd) {
-            return item.id === itemd.id;
-        });
-
-        if (!match) {
-            console.log("here")
-        imageItems.push(item);
-        }
-
-                    });
+                    mainentities.forEach(function(mainentity) {
+                        var mainfolder = folder.getFolder(mainentity.name);
+                        mainfolder.getEntities().then(function(entities) {
+                            var entitylen = 0;
+                            // entities is array with the document's files and folders.
+                            entities.forEach(function(entity) {
+                                entitylen = entitylen + 1;
+                            });
+                            if (entitylen != 0) {
+                                var item = new observable.Observable();
+                                item.set("foldername", mainentity.name);
+                                if (!(entity.name in imageItems)) {
+                                    imageItems.unshift(item);
+                                }
+                            }
+                        })
+                    })
                 }, function(error) {
                     console.error(error.message);
                 });
@@ -260,9 +274,7 @@ function startSelection(context) {
             })
 
         });
-    }).catch(function(e) {
-        console.log(e.eventName);
-    });
+    }).catch(function(e) {});
 }
 
 function extractImageName(fileUri) {
@@ -272,32 +284,41 @@ function extractImageName(fileUri) {
 }
 
 var onChildEvent = function(result) {
-    console.log("Event type: " + result.type);
-    console.log("Key: " + result.key);
-    console.log("Value: " + JSON.stringify(result.value));
     var keyNames = Object.keys(result.value);
-    console.log(keyNames)
     for (var key in keyNames) {
         var i = keyNames[key]
-        console.log(i)
-        var myobj = result.value[i]
-        console.log(JSON.stringify(myobj))
-        var receiver = myobj['receiver']
         var user = appSettings.getString('username', 'not set');
-        var image = myobj["filename"]["0"];
         var folder = documents.getFolder("downloads");
-        var logoPath = folder.path + '/' + myobj['sender'] + '/' + image
-        if (myobj['downloaded'] != true) {
+        if (result.value[i]['downloaded'] != true) {
+            var myobj = result.value[i]
+            var image = myobj["filename"]["0"];
+            var receiver = myobj['receiver']
+            var logoPath = folder.path + '/' + myobj['sender'] + '/' + image
             path = '/transferbucket/' + receiver + '/' + myobj['sender'] + '/' + i
-            console.log(path)
             firebase.downloadFile({
                 remoteFullPath: 'uploads/images/' + user + '/' + myobj['sender'] + '/' + myobj["filename"]["0"],
                 localFile: fs.File.fromPath(logoPath)
             }).then(function(uploadedFile) {
                 firebase.update(path, {downloaded: true});
-            }, function(error) {
-                console.log("File download error: " + error);
-            });
+                var exists = false;
+                imageItems.forEach(function(element) {
+                    if (element.foldername == myobj['sender']) {
+                        exists = true;
+                        return;
+                    }
+                })
+                if (exists == false) {
+                    var item = new observable.Observable();
+                    item.set("foldername", myobj['sender']);
+                    imageItems.unshift(item);
+                }
+
+                var item = new observable.Observable();
+                item.set("thumb", logoPath);
+                item.set("sender", myobj['sender'])
+                item.set("name", image)
+                uploadedItems.unshift(item);
+            }, function(error) {});
         }
         folder.getEntities().then(function(mainentities) {
             mainentities.forEach(function(mainentity) {
@@ -306,38 +327,14 @@ var onChildEvent = function(result) {
                     var currarr = []
                     subentities.forEach(function(subentity) {
                         var final_url = 'file://' + subentity.path
-                        currarr.push(final_url)
+                        currarr.unshift(final_url)
 
                     })
                     myImages[mainentity.name] = currarr
-                    console.log(myImages[mainentity.name])
                 })
             })
         })
-        folder.getEntities().then(function(entities) {
-            mainViewModel.set("imageItems", imageItems);
-            // entities is array with the document's files and folders.
-            entities.forEach(function(entity) {
-                console.log(entity.name)
-                var item = new observable.Observable();
-                item.set("foldername", entity.name);
 
-if (imageItems.indexOf(item)>0) {
-    console.log("here1")
-imageItems.push(item);
-}
-
-            });
-        }, function(error) {
-            console.error(error.message);
-        });
-        mainViewModel.set("uploadedItems", uploadedItems);
-        var item = new observable.Observable();
-        item.set("thumb", logoPath);
-if (uploadedItems.indexOf(item) <0) {
-console.log("here")
-uploadedItems.push(item);
-}
     };
 }
 var senderlistener = appSettings.getString('username', 'not set');
@@ -347,19 +344,47 @@ firebase.addChildEventListener(onChildEvent, "/transferbucket/" + senderlistener
 });
 
 function listitem(args) {
-
-    console.log(JSON.stringify(myImages))
     photoViewer.showViewer(myImages[args.object.text]);
 
 }
 function deleteitem(args) {
     var folder = documents.getFolder("downloads");
-
-    var file = folder.getFile((args.object.img).toString());
+    var senderfolder = folder.getFolder(args.object.sender)
+    var file = senderfolder.getFile((args.object.img).toString());
     file.remove().then(function(result) {
-        mainViewModel.set("imageItems", imageItems);
-        imageItems.pop(args.object.index);
+        var folderindex = args.object.index
+        mainViewModel.set("uploadedItems", uploadedItems);
+        uploadedItems.pop(args.object.index);
+        var folder = documents.getFolder("downloads");
+        var user = appSettings.getString('username', 'not set');
+        folder.getEntities().then(function(mainentities) {
+            mainentities.forEach(function(mainentity) {
+                var mainfolder = folder.getFolder(mainentity.name);
+                mainfolder.getEntities().then(function(subentities) {
+                    var currarr = []
+                    subentities.forEach(function(subentity) {
+                        var final_url = 'file://' + subentity.path
+                        currarr.unshift(final_url)
 
+                    })
+                    myImages[mainentity.name] = currarr
+                })
+            })
+        })
+        senderfolder.getEntities().then(function(entities) {
+            mainViewModel.set("imageItems", imageItems);
+            var entitylen = 0;
+            // entities is array with the document's files and folders.
+            entities.forEach(function(entity) {
+                entitylen = entitylen + 1;
+            });
+            if (entitylen == 0) {
+                imageItems.pop(folderindex)
+
+            }
+        }, function(error) {
+            console.error(error.message);
+        });
     }, function(error) {
         // Failed to remove the file.
     });
@@ -382,15 +407,24 @@ exports.logout = function() {
         }
     });
 };
+
 exports.listitem = listitem;
-exports.delete = deleteitem;
+exports.deleteitem = deleteitem;
 exports.sendImg = sendImg;
-exports.deleteall = function() {
+exports.deleteall = function deletall() {
     var folder = documents.getFolder("downloads");
     folder.clear().then(function() {
+        mainViewModel.set("uploadedItems", uploadedItems);
         mainViewModel.set("imageItems", imageItems);
         imageItems.splice(0, imageItems.length)
+        uploadedItems.splice(0, uploadedItems.length)
     }, function(error) {
         // Failed to clear the folder.
     });
+};
+exports.viewimage = function(args) {
+    var mylist = []
+    var path = 'file://' + args.object.src
+    mylist.push(path)
+    photoViewer.showViewer(mylist);
 }
